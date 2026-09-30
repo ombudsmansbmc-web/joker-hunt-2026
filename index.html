@@ -98,11 +98,13 @@
       <div class="stop-card locked-card" id="qr-card">
         <div class="step-badge">JOKER TRANSMISSION</div>
         <p id="video-status"><strong>VIDEO COMING SOON</strong></p>
-        <p>After watching Joker\'s video, answer:</p>
-        <p><strong>What is the last word of Joker's final sentence?</strong></p>
-        <input id="qr-answer" autocomplete="off" placeholder="Enter control word">
-        <button class="primary compact" id="check-qr">UNLOCK NEXT MISSION</button>
-        <p class="feedback" id="qr-feedback"></p>
+        <div id="video-check" hidden>
+          <p>After watching Joker's video, answer:</p>
+          <p><strong>What is the last word of Joker's final sentence?</strong></p>
+          <input id="qr-answer" autocomplete="off" placeholder="Enter control word">
+          <button class="primary compact" id="check-qr">UNLOCK NEXT MISSION</button>
+          <p class="feedback" id="qr-feedback"></p>
+        </div>
       </div>
     </section>
 
