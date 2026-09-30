@@ -13,8 +13,9 @@
       <div class="eyebrow">SCUBA BIKERS MC BONAIRE</div>
       <div class="joker-mark">HAHA</div>
       <h1>JOKER<br>HUNT</h1>
+      <p class="subtitle">ARKHAM PROTOCOL</p>
       <p class="date">OCTOBER 31, 2026</p>
-      <p class="intro">Bonaire has a problem. The Joker escaped Arkham, and he left a trail behind.</p>
+      <p class="intro">The Joker escaped Arkham and left a trail across Bonaire. Your team has one job: follow it.</p>
       <button class="primary" data-go="register">ENTER THE HUNT</button>
       <p class="safety">Ride safe. Only use your phone when your team is safely stopped.</p>
     </section>
@@ -31,14 +32,22 @@
     </section>
 
     <section id="screen-briefing" class="screen">
-      <div class="eyebrow">ENCRYPTED BATMAN BRIEFING</div>
-      <h2>MISSION START</h2>
-      <div class="video-placeholder">
-        <span>VIDEO PLACEHOLDER</span>
-        <strong>BATMAN BRIEFING</strong>
+      <div class="eyebrow">MISSION BRIEFING</div>
+      <h2>ARKHAM PROTOCOL</h2>
+      <div class="mission-copy">
+        <p>The Joker is active on Bonaire.</p>
+        <p>Follow his trail through <strong>4 locations</strong>, solve every puzzle, keep every code number and reach the live finale.</p>
       </div>
-      <p>Listen carefully. Follow the trail, solve every puzzle and keep every number you discover.</p>
-      <p class="warning">Do not skip ahead. Each mission must be unlocked in the correct order.</p>
+      <div class="rules-card">
+        <strong>IMPORTANT</strong>
+        <ul>
+          <li>Play the hunt strictly in order.</li>
+          <li>Do not skip stops or work ahead.</li>
+          <li>Finish every stop before continuing.</li>
+          <li>At Stops 1–3, the QR video is always the final task.</li>
+          <li>Ride safely and only use your phone while stopped.</li>
+        </ul>
+      </div>
       <button class="primary" id="begin-mission">BEGIN MISSION</button>
     </section>
 
@@ -47,19 +56,81 @@
       <h2 id="mission-title">FIND THE FIRST TRAIL</h2>
       <div class="status-card">
         <span>TEAM</span><strong id="active-team">—</strong>
-        <span>STATUS</span><strong>HUNT IN PROGRESS</strong>
+        <span>STATUS</span><strong id="mission-status">HUNT IN PROGRESS</strong>
         <span>TIME</span><strong id="timer">00:00:00</strong>
       </div>
-      <p>Your next mission is locked until the correct location QR code is scanned.</p>
-      <div class="lock">🔒</div>
-      <p class="warning">Joker is waiting.</p>
+      <p id="mission-copy">Your first destination is revealed in Batman's briefing. Complete that stop and scan its QR code to continue.</p>
+      <div class="progress" id="progress">START → STOP 1 → STOP 2 → STOP 3 → FINALE</div>
+      <button class="ghost" id="reset-game">RESET GAME</button>
+    </section>
+
+    <section id="screen-stop" class="screen">
+      <div class="eyebrow" id="stop-eyebrow">JOKER TRANSMISSION</div>
+      <h2 id="stop-heading">STOP</h2>
+      <div class="joker-mark small">HAHA</div>
+      <div class="stop-card">
+        <div class="step-badge">PUZZLE 1</div>
+        <p id="puzzle1-text"></p>
+        <input id="puzzle1-answer" autocomplete="off" placeholder="Enter answer">
+        <button class="primary compact" id="check-puzzle1">CHECK ANSWER</button>
+        <p class="feedback" id="puzzle1-feedback"></p>
+      </div>
+
+      <div class="stop-card locked-card" id="puzzle2-card">
+        <div class="step-badge">PUZZLE 2</div>
+        <p id="puzzle2-text"></p>
+        <input id="puzzle2-answer" autocomplete="off" placeholder="Enter answer">
+        <button class="primary compact" id="check-puzzle2">CHECK ANSWER</button>
+        <p class="feedback" id="puzzle2-feedback"></p>
+      </div>
+
+      <div class="stop-card locked-card" id="qr-card">
+        <div class="step-badge">QR CHECK</div>
+        <p>Watch Joker's video first. Then answer:</p>
+        <p><strong>What is the last word of Joker's final sentence?</strong></p>
+        <input id="qr-answer" autocomplete="off" placeholder="Enter control word">
+        <button class="primary compact" id="check-qr">UNLOCK NEXT MISSION</button>
+        <p class="feedback" id="qr-feedback"></p>
+      </div>
+    </section>
+
+    <section id="screen-finale" class="screen">
+      <div class="eyebrow">FINAL MISSION</div>
+      <h2>LIVE ARREST ZONE</h2>
+      <div class="joker-mark small">HAHA</div>
+      <div class="rules-card">
+        <strong>YOU HAVE 5 MINUTES</strong>
+        <ul>
+          <li>Crack Joker's lock code.</li>
+          <li>You have <strong>2 attempts</strong>.</li>
+          <li>Take an arrest photo with Joker.</li>
+          <li>The first team to crack the correct code wins the on-site wildcard.</li>
+        </ul>
+      </div>
+      <label>Code attempt 1<input id="final-code-1" inputmode="numeric" maxlength="3" placeholder="___"></label>
+      <label>Code attempt 2<input id="final-code-2" inputmode="numeric" maxlength="3" placeholder="___"></label>
+      <button class="primary" id="submit-finale">SUBMIT FINAL CODE</button>
+      <p class="feedback" id="final-feedback"></p>
+    </section>
+
+    <section id="screen-complete" class="screen">
+      <div class="joker-mark">HAHA</div>
+      <h2>HUNT COMPLETE</h2>
+      <p>Your team reached the finale.</p>
+      <div class="status-card">
+        <span>TEAM</span><strong id="complete-team">—</strong>
+        <span>CODE</span><strong>497</strong>
+        <span>EXTRA</span><strong>???</strong>
+      </div>
+      <p class="warning">Keep watching. Joker still has one last surprise.</p>
     </section>
 
     <section id="screen-denied" class="screen">
       <div class="joker-mark small">HAHA</div>
       <h2>ACCESS DENIED</h2>
-      <p>Joker isn’t ready for you yet.</p>
+      <p>Joker isn't ready for you yet.</p>
       <p>Complete your current mission first.</p>
+      <button class="ghost" data-go="mission">RETURN TO MISSION</button>
     </section>
   </main>
   <script src="app.js"></script>
