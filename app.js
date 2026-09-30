@@ -71,7 +71,7 @@ setInterval(tick,1000);
 function renderMission(){
   document.getElementById("active-team").textContent=state.team||"UNKNOWN TEAM";
   const title=document.getElementById("mission-title"), copy=document.getElementById("mission-copy"), status=document.getElementById("mission-status");
-  if(state.stage===0){title.textContent="FIND THE FIRST TRAIL";copy.textContent="Your first destination is revealed in Batman's briefing. Complete that stop and scan its QR code to continue."}
+  if(state.stage===0){title.textContent="FIND THE FIRST TRAIL";copy.textContent="Your first destination is revealed in Batman's briefing. When you arrive, take the requested location photo to unlock the mission."}
   if(state.stage===1){title.textContent="STOP 1 UNLOCKED";copy.textContent="Complete Stop 1 in order: Puzzle 1, Puzzle 2, then Joker's QR check."}
   if(state.stage===2){title.textContent="STOP 2 UNLOCKED";copy.textContent="Complete Stop 2 in order. Do not skip ahead."}
   if(state.stage===3){title.textContent="STOP 3 UNLOCKED";copy.textContent="Complete Stop 3 in order. The finale comes next."}
@@ -166,7 +166,15 @@ document.getElementById("submit-finale").addEventListener("click",()=>{
 const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
 if(unlock){
-  if(!state.start){show("denied")}
+  if(!state.start && unlock>=2){
+    state.team=state.team||"TEST TEAM";
+    state.players=state.players||2;
+    state.start=Date.now();
+    state.stage=unlock;
+    save();
+    unlockStop(unlock);
+  }
+  else if(!state.start){show("denied")}
   else if(unlock===1&&state.stage===0){unlockStop(1)}
   else if(unlock===2){unlockStop(2)}
   else if(unlock>state.stage){show("denied")}
