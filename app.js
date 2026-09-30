@@ -3,7 +3,10 @@ const state={
   team:localStorage.getItem("jh_team")||"",
   players:Number(localStorage.getItem("jh_players")||0),
   start:Number(localStorage.getItem("jh_start")||0),
-  stage:Number(localStorage.getItem("jh_stage")||0),\n  attempts:JSON.parse(localStorage.getItem("jh_attempts")||"{}"),\n  results:JSON.parse(localStorage.getItem("jh_results")||"{}")\n};
+  stage:Number(localStorage.getItem("jh_stage")||0),
+  attempts:JSON.parse(localStorage.getItem("jh_attempts")||"{}"),
+  results:JSON.parse(localStorage.getItem("jh_results")||"{}")
+};
 
 const stops={
   1:{
@@ -107,7 +110,7 @@ function loadStop(n){
   document.getElementById("check-puzzle1").onclick=()=>checkAnswer("puzzle1-answer",data.p1answers,"puzzle1-feedback",()=>document.getElementById("puzzle2-card").classList.add("unlocked"));
   document.getElementById("check-puzzle2").onclick=()=>checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"));
   document.getElementById("check-qr").onclick=()=>checkAnswer("qr-answer",data.qr,"qr-feedback",()=>{
-    if(n<3){state.stage=n+1;save();renderMission();setTimeout(()=>unlockStop(n+1),450)}
+    if(n<3){state.stage=n+1;save();renderMission();setTimeout(()=>show("mission"),450)}
     else{state.stage=4;save();setTimeout(()=>show("finale"),450)}
   });
 }
@@ -168,7 +171,8 @@ const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
 if(unlock){
   if(!state.start){show("denied")}
-  else if(unlock===1&&state.stage===0){unlockStop(1)}\n  else if(unlock>state.stage){show("denied")}
+  else if(unlock===1&&state.stage===0){unlockStop(1)}
+  else if(unlock>state.stage){show("denied")}
   else if(unlock>=1&&unlock<=3){unlockStop(unlock)}
   else if(unlock===4&&state.stage>=4){show("finale")}
 }else if(state.start){
