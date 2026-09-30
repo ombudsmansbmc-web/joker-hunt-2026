@@ -78,6 +78,13 @@ function renderMission(){
   if(state.stage>=4){title.textContent="FINAL MISSION";copy.textContent="Joker is waiting for you live.";status.textContent="FINALE UNLOCKED"}
 }
 
+document.getElementById("continue-mission").addEventListener("click",()=>{
+  let n=state.stage;
+  if(n===0) n=1;
+  if(n>=1 && n<=3) unlockStop(n);
+  else if(n>=4) show("finale");
+});
+
 function unlockStop(n){
   state.stage=Math.max(state.stage,n);
   save();
@@ -165,21 +172,18 @@ document.getElementById("submit-finale").addEventListener("click",()=>{
 
 const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
-if(unlock){
-  if(!state.start && unlock>=2){
-    state.team=state.team||"TEST TEAM";
-    state.players=state.players||2;
-    state.start=Date.now();
-    state.stage=unlock;
-    save();
-    unlockStop(unlock);
-  }
-  else if(!state.start){show("denied")}
-  else if(unlock===1&&state.stage===0){unlockStop(1)}
-  else if(unlock===2){unlockStop(2)}
-  else if(unlock>state.stage){show("denied")}
-  else if(unlock>=1&&unlock<=3){unlockStop(unlock)}
-  else if(unlock===4&&state.stage>=4){show("finale")}
+if(unlock>=1 && unlock<=3){
+  if(!state.start) state.start=Date.now();
+  if(!state.team) state.team="TEST TEAM";
+  if(!state.players) state.players=2;
+  state.stage=unlock;
+  save();
+  unlockStop(unlock);
+}else if(unlock===4){
+  if(!state.start) state.start=Date.now();
+  state.stage=4;
+  save();
+  show("finale");
 }else if(state.start){
   renderMission();
   show(state.stage===5?"complete":"mission");
