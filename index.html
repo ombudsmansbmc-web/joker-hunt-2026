@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <title>Joker Hunt 2026 | Scuba Bikers MC Bonaire</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="shell">
+    <section id="screen-home" class="screen active">
+      <div class="eyebrow">SCUBA BIKERS MC BONAIRE</div>
+      <div class="joker-mark">HAHA</div>
+      <h1>JOKER<br>HUNT</h1>
+      <p class="date">OCTOBER 31, 2026</p>
+      <p class="intro">Bonaire has a problem. The Joker escaped Arkham, and he left a trail behind.</p>
+      <button class="primary" data-go="register">ENTER THE HUNT</button>
+      <p class="safety">Ride safe. Only use your phone when your team is safely stopped.</p>
+    </section>
+
+    <section id="screen-register" class="screen">
+      <div class="eyebrow">TEAM REGISTRATION</div>
+      <h2>IDENTIFY YOUR TEAM</h2>
+      <form id="team-form">
+        <label>Team name<input id="team-name" maxlength="40" required autocomplete="off" placeholder="Enter team name"></label>
+        <label>Number of players<input id="player-count" type="number" min="1" max="20" required value="2"></label>
+        <button class="primary" type="submit">REGISTER TEAM</button>
+      </form>
+      <button class="ghost" data-go="home">BACK</button>
+    </section>
+
+    <section id="screen-briefing" class="screen">
+      <div class="eyebrow">ENCRYPTED BATMAN BRIEFING</div>
+      <h2>MISSION START</h2>
+      <div class="video-placeholder">
+        <span>VIDEO PLACEHOLDER</span>
+        <strong>BATMAN BRIEFING</strong>
+      </div>
+      <p>Listen carefully. Follow the trail, solve every puzzle and keep every number you discover.</p>
+      <p class="warning">Do not skip ahead. Each mission must be unlocked in the correct order.</p>
+      <button class="primary" id="begin-mission">BEGIN MISSION</button>
+    </section>
+
+    <section id="screen-mission" class="screen">
+      <div class="eyebrow">MISSION ACTIVE</div>
+      <h2 id="mission-title">FIND THE FIRST TRAIL</h2>
+      <div class="status-card">
+        <span>TEAM</span><strong id="active-team">—</strong>
+        <span>STATUS</span><strong>HUNT IN PROGRESS</strong>
+        <span>TIME</span><strong id="timer">00:00:00</strong>
+      </div>
+      <p>Your next mission is locked until the correct location QR code is scanned.</p>
+      <div class="lock">🔒</div>
+      <p class="warning">Joker is waiting.</p>
+    </section>
+
+    <section id="screen-denied" class="screen">
+      <div class="joker-mark small">HAHA</div>
+      <h2>ACCESS DENIED</h2>
+      <p>Joker isn’t ready for you yet.</p>
+      <p>Complete your current mission first.</p>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
