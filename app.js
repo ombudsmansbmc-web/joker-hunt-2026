@@ -3,8 +3,7 @@ const state={
   team:localStorage.getItem("jh_team")||"",
   players:Number(localStorage.getItem("jh_players")||0),
   start:Number(localStorage.getItem("jh_start")||0),
-  stage:Number(localStorage.getItem("jh_stage")||0)
-};
+  stage:Number(localStorage.getItem("jh_stage")||0),\n  attempts:JSON.parse(localStorage.getItem("jh_attempts")||"{}"),\n  results:JSON.parse(localStorage.getItem("jh_results")||"{}")\n};
 
 const stops={
   1:{
@@ -35,7 +34,7 @@ const stops={
 
 function normalize(v){return String(v||"").trim().toLowerCase().replace(/\s+/g," ")}
 function show(name){screens.forEach(s=>s.classList.toggle("active",s.id==="screen-"+name));window.scrollTo(0,0)}
-function save(){localStorage.setItem("jh_team",state.team);localStorage.setItem("jh_players",state.players);localStorage.setItem("jh_start",state.start);localStorage.setItem("jh_stage",state.stage)}
+function save(){localStorage.setItem("jh_team",state.team);localStorage.setItem("jh_players",state.players);localStorage.setItem("jh_start",state.start);localStorage.setItem("jh_stage",state.stage);localStorage.setItem("jh_attempts",JSON.stringify(state.attempts));localStorage.setItem("jh_results",JSON.stringify(state.results))}
 
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
 
@@ -86,7 +85,7 @@ function loadStop(n){
   document.getElementById("stop-eyebrow").textContent="JOKER TRANSMISSION // "+data.title;
   document.getElementById("puzzle1-text").textContent=data.p1;
   document.getElementById("puzzle2-text").textContent=data.p2;
-  ["puzzle1-answer","puzzle2-answer","qr-answer"].forEach(id=>document.getElementById(id).value="");
+  ["puzzle1-answer","puzzle2-answer","qr-answer"].forEach(id=>{const e=document.getElementById(id);e.value="";e.disabled=false});
   ["puzzle1-feedback","puzzle2-feedback","qr-feedback"].forEach(id=>{const e=document.getElementById(id);e.textContent="";e.className="feedback"});
   document.getElementById("puzzle2-card").classList.remove("unlocked");
   document.getElementById("qr-card").classList.remove("unlocked");
@@ -100,10 +99,34 @@ function loadStop(n){
 
 function checkAnswer(inputId,answers,feedbackId,onOk){
   const input=document.getElementById(inputId),feedback=document.getElementById(feedbackId),value=normalize(input.value);
+  const stopNumber=Number(document.getElementById("stop-heading").textContent.replace(/\D/g,""))||0;
+  const key="s"+stopNumber+"_"+inputId;
   const ok=answers.map(normalize).includes(value);
-  feedback.textContent=ok?"CORRECT — ACCESS GRANTED":"WRONG ANSWER — TRY AGAIN";
-  feedback.className="feedback "+(ok?"ok":"bad");
-  if(ok){input.disabled=true;onOk&&onOk()}
+  state.attempts[key]=(state.attempts[key]||0)+1;
+
+  if(ok){
+    state.results[key]={correct:true,attempts:state.attempts[key]};
+    feedback.textContent=state.attempts[key]===1?"CORRECT — FULL POINTS":"CORRECT — SECOND ATTEMPT";
+    feedback.className="feedback ok";
+    input.disabled=true;
+    save();
+    onOk&&onOk();
+    return;
+  }
+
+  if(state.attempts[key]===1){
+    feedback.textContent="INCORRECT — HAHAHA… TRY AGAIN.";
+    feedback.className="feedback bad";
+    save();
+    return;
+  }
+
+  state.results[key]={correct:false,attempts:state.attempts[key]};
+  feedback.textContent="STILL WRONG — JOKER WINS THIS ONE. CONTINUE THE HUNT.";
+  feedback.className="feedback bad";
+  input.disabled=true;
+  save();
+  setTimeout(()=>{onOk&&onOk()},700);
 }
 
 document.getElementById("submit-finale").addEventListener("click",()=>{
@@ -122,7 +145,7 @@ document.getElementById("submit-finale").addEventListener("click",()=>{
 
 document.getElementById("reset-game").addEventListener("click",()=>{
   if(!confirm("Reset all Joker Hunt progress on this device?"))return;
-  ["jh_team","jh_players","jh_start","jh_stage"].forEach(k=>localStorage.removeItem(k));
+  ["jh_team","jh_players","jh_start","jh_stage","jh_attempts","jh_results"].forEach(k=>localStorage.removeItem(k));
   location.href=location.pathname;
 });
 
