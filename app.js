@@ -90,8 +90,8 @@ function loadStop(n){
   document.getElementById("stop-heading").textContent=data.title;
   document.getElementById("stop-eyebrow").textContent="JOKER TRANSMISSION // "+data.title;
   document.getElementById("photo-instruction").textContent=data.photo;
-  document.getElementById("video-check").hidden=true;
-  document.getElementById("video-status").innerHTML="<strong>VIDEO COMING SOON</strong>";
+  document.getElementById("video-check").hidden=false;
+  document.getElementById("video-status").innerHTML="<strong>VIDEO COMING SOON — TEST MODE</strong>";
   document.getElementById("puzzle1-text").textContent=data.p1;
   document.getElementById("puzzle2-text").textContent=data.p2;
   ["puzzle1-answer","puzzle2-answer","qr-answer"].forEach(id=>{const e=document.getElementById(id);e.value="";e.disabled=false});
@@ -174,6 +174,7 @@ const unlock=Number(params.get("unlock")||0);
 if(unlock){
   if(!state.start){show("denied")}
   else if(unlock===1&&state.stage===0){unlockStop(1)}
+  else if(unlock===2){unlockStop(2)}
   else if(unlock>state.stage){show("denied")}
   else if(unlock>=1&&unlock<=3){unlockStop(unlock)}
   else if(unlock===4&&state.stage>=4){show("finale")}
