@@ -68,7 +68,14 @@
       <div class="eyebrow" id="stop-eyebrow">JOKER TRANSMISSION</div>
       <h2 id="stop-heading">STOP</h2>
       <div class="joker-mark small">HAHA</div>
-      <div class="stop-card">
+      <div class="stop-card" id="photo-card">
+        <div class="step-badge">LOCATION PROOF</div>
+        <p id="photo-instruction">Take a photo of the landmark at this location.</p>
+        <label class="photo-button">TAKE PHOTO<input id="location-photo" type="file" accept="image/*" capture="environment"></label>
+        <img id="photo-preview" alt="Location proof preview" hidden>
+        <p class="feedback" id="photo-feedback"></p>
+      </div>
+      <div class="stop-card locked-card" id="puzzle1-card">
         <div class="step-badge">PUZZLE 1</div>
         <p id="puzzle1-text"></p>
         <input id="puzzle1-answer" autocomplete="off" placeholder="Enter answer">
