@@ -163,12 +163,6 @@ document.getElementById("submit-finale").addEventListener("click",()=>{
   }
 });
 
-document.getElementById("reset-game").addEventListener("click",()=>{
-  if(!confirm("Reset all Joker Hunt progress on this device?"))return;
-  ["jh_team","jh_players","jh_start","jh_stage","jh_attempts","jh_results"].forEach(k=>localStorage.removeItem(k));
-  location.href=location.pathname;
-});
-
 const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
 if(unlock){
