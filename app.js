@@ -90,6 +90,8 @@ function loadStop(n){
   document.getElementById("stop-heading").textContent=data.title;
   document.getElementById("stop-eyebrow").textContent="JOKER TRANSMISSION // "+data.title;
   document.getElementById("photo-instruction").textContent=data.photo;
+  document.getElementById("video-check").hidden=true;
+  document.getElementById("video-status").innerHTML="<strong>VIDEO COMING SOON</strong>";
   document.getElementById("puzzle1-text").textContent=data.p1;
   document.getElementById("puzzle2-text").textContent=data.p2;
   ["puzzle1-answer","puzzle2-answer","qr-answer"].forEach(id=>{const e=document.getElementById(id);e.value="";e.disabled=false});
