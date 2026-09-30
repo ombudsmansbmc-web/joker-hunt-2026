@@ -73,7 +73,7 @@ function renderMission(){
   const title=document.getElementById("mission-title"), copy=document.getElementById("mission-copy"), status=document.getElementById("mission-status");
   if(state.stage===0){title.textContent="FIND THE FIRST TRAIL";copy.textContent="Your first destination is revealed in Batman's briefing. When you arrive, take the requested location photo to unlock the mission."}
   if(state.stage===1){title.textContent="STOP 1 UNLOCKED";copy.textContent="Complete Stop 1 in order: Puzzle 1, Puzzle 2, then Joker's QR check."}
-  if(state.stage===2){title.textContent="STOP 2 UNLOCKED";copy.textContent="Complete Stop 2 in order. Do not skip ahead."}
+  if(state.stage===2){title.textContent="STOP 2 UNLOCKED";copy.textContent="You have reached the next location. Press the button below to start the location mission."}
   if(state.stage===3){title.textContent="STOP 3 UNLOCKED";copy.textContent="Complete Stop 3 in order. The finale comes next."}
   if(state.stage>=4){title.textContent="FINAL MISSION";copy.textContent="Joker is waiting for you live.";status.textContent="FINALE UNLOCKED"}
 }
