@@ -14,7 +14,7 @@ const stops={
     p1:"18 ÷ 3 + 2 × 2 − 3 = ?",
     p1answers:["7"],
     p2:"You stop here as a group more often, but you are not the only ones. Many people stop here to search for something underwater. Long ago this place had a very different purpose. Where people once came for help, Joker now uses the building across the road for his experiments. What kind of place are you looking for?",
-    p2answers:["old lab","laboratory","lab","medical lab","old laboratory"],
+    p2answers:["laboratory","lab","old laboratory"],
     qr:["plan"],
     photo:"Take a photo of Willemstoren. Make sure the lighthouse is clearly visible."
   },
