@@ -12,7 +12,8 @@ const stops={
     p1answers:["7"],
     p2:"You stop here as a group more often, but you are not the only ones. Many people stop here to search for something underwater. Long ago this place had a very different purpose. Where people once came for help, Joker now uses the building across the road for his experiments. What kind of place are you looking for?",
     p2answers:["old lab","laboratory","lab","medical lab","old laboratory"],
-    qr:["plan"]
+    qr:["plan"],
+    photo:"Take a photo of Willemstoren. Make sure the lighthouse is clearly visible."
   },
   2:{
     title:"STOP 2",
@@ -20,7 +21,8 @@ const stops={
     p1answers:["4"],
     p2:"AYERA — AWE — SEMPER. What do these words mean, and where on Bonaire can you find them while looking out over the town?",
     p2answers:["seru largu","gisteren vandaag altijd","yesterday today always","yesterday today and always"],
-    qr:["look"]
+    qr:["look"],
+    photo:"Take a photo of the recognizable landmark at this location."
   },
   3:{
     title:"STOP 3",
@@ -28,7 +30,8 @@ const stops={
     p1answers:["9"],
     p2:"Joker left only three compass directions: NORTH — SOUTH — WEST. Which direction is missing?",
     p2answers:["east","oost"],
-    qr:["over"]
+    qr:["over"],
+    photo:"Take a photo of the recognizable landmark at this location."
   }
 };
 
@@ -83,12 +86,24 @@ function loadStop(n){
   const data=stops[n];
   document.getElementById("stop-heading").textContent=data.title;
   document.getElementById("stop-eyebrow").textContent="JOKER TRANSMISSION // "+data.title;
+  document.getElementById("photo-instruction").textContent=data.photo;
   document.getElementById("puzzle1-text").textContent=data.p1;
   document.getElementById("puzzle2-text").textContent=data.p2;
   ["puzzle1-answer","puzzle2-answer","qr-answer"].forEach(id=>{const e=document.getElementById(id);e.value="";e.disabled=false});
   ["puzzle1-feedback","puzzle2-feedback","qr-feedback"].forEach(id=>{const e=document.getElementById(id);e.textContent="";e.className="feedback"});
+  document.getElementById("puzzle1-card").classList.remove("unlocked");
   document.getElementById("puzzle2-card").classList.remove("unlocked");
   document.getElementById("qr-card").classList.remove("unlocked");
+  const photo=document.getElementById("location-photo"),preview=document.getElementById("photo-preview"),photoFeedback=document.getElementById("photo-feedback");
+  photo.value=""; preview.hidden=true; preview.removeAttribute("src"); photoFeedback.textContent=""; photoFeedback.className="feedback";
+  photo.onchange=()=>{
+    const file=photo.files&&photo.files[0];
+    if(!file)return;
+    preview.src=URL.createObjectURL(file); preview.hidden=false;
+    photoFeedback.textContent="PHOTO RECEIVED — MISSION UNLOCKED";
+    photoFeedback.className="feedback ok";
+    document.getElementById("puzzle1-card").classList.add("unlocked");
+  };
   document.getElementById("check-puzzle1").onclick=()=>checkAnswer("puzzle1-answer",data.p1answers,"puzzle1-feedback",()=>document.getElementById("puzzle2-card").classList.add("unlocked"));
   document.getElementById("check-puzzle2").onclick=()=>checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"));
   document.getElementById("check-qr").onclick=()=>checkAnswer("qr-answer",data.qr,"qr-feedback",()=>{
