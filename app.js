@@ -25,7 +25,7 @@ const stops={
     p2:"AYERA — AWE — SEMPER. What do these words mean, and where on Bonaire can you find them while looking out over the town?",
     p2answers:["seru largu","gisteren vandaag altijd","yesterday today always","yesterday today and always"],
     qr:["look"],
-    photo:"Take a photo of the recognizable landmark at this location."
+    photo:"Take a photo of the old laboratory at Karpata. Make sure the building is clearly visible."
   },
   3:{
     title:"STOP 3",
