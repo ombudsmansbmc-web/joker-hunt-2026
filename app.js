@@ -130,7 +130,7 @@ const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
 if(unlock){
   if(!state.start){show("denied")}
-  else if(unlock>state.stage+1){show("denied")}
+  else if(unlock===1&&state.stage===0){unlockStop(1)}\n  else if(unlock>state.stage){show("denied")}
   else if(unlock>=1&&unlock<=3){unlockStop(unlock)}
   else if(unlock===4&&state.stage>=4){show("finale")}
 }else if(state.start){
