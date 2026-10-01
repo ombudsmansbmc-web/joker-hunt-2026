@@ -219,6 +219,28 @@ document.getElementById("joker-photo").addEventListener("change",e=>{
   feedback.className="feedback ok";
   state.results.final_photo=true;
   save();
+  if(document.getElementById("submit-finale").disabled){setTimeout(()=>show("return"),500);}
+});
+
+document.getElementById("back-at-base").addEventListener("click",()=>show("debrief"));
+
+document.getElementById("submit-final-answers").addEventListener("click",()=>{
+  const haha=document.getElementById("haha-count").value.trim();
+  const socks=document.getElementById("joker-socks").value.trim();
+  const feedback=document.getElementById("debrief-feedback");
+  if(haha===""||socks===""){
+    feedback.textContent="ANSWER BOTH QUESTIONS BEFORE FINISHING.";
+    feedback.className="feedback bad";
+    return;
+  }
+  state.results.final_haha_count=haha;
+  state.results.final_socks=socks;
+  state.results.final_socks_correct=normalize(socks)==="green";
+  state.results.finished_at=Date.now();
+  state.stage=5;
+  save();
+  document.getElementById("complete-team").textContent=state.team||"UNKNOWN TEAM";
+  show("complete");
 });
 
 const testReset=new URLSearchParams(location.search).get("testreset");
