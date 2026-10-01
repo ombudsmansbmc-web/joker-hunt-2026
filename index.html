@@ -143,16 +143,42 @@
       </div>
     </section>
 
+    <section id="screen-return" class="screen">
+      <div class="eyebrow">FIELD MISSION COMPLETE</div>
+      <h2>RETURN TO BASE</h2>
+      <div class="joker-mark small">HAHA</div>
+      <p>Return to the Scuba Bikers MC clubhouse. Your final debriefing is waiting for you there.</p>
+      <p class="warning">Do not close the game yet.</p>
+      <button class="primary" id="back-at-base">WE ARE BACK AT BASE</button>
+    </section>
+
+    <section id="screen-debrief" class="screen">
+      <div class="eyebrow">FINAL DEBRIEFING</div>
+      <h2>ONE LAST TEST</h2>
+      <div class="stop-card unlocked">
+        <div class="step-badge">FINAL QUESTION 1</div>
+        <p>How many HAHA signs did your team see during the hunt?</p>
+        <input id="haha-count" inputmode="numeric" placeholder="Enter number">
+      </div>
+      <div class="stop-card unlocked">
+        <div class="step-badge">FINAL QUESTION 2</div>
+        <p>What colour socks was the Joker wearing?</p>
+        <input id="joker-socks" autocomplete="off" placeholder="Enter answer">
+      </div>
+      <button class="primary" id="submit-final-answers">SUBMIT FINAL ANSWERS</button>
+      <p class="feedback" id="debrief-feedback"></p>
+    </section>
+
     <section id="screen-complete" class="screen">
       <div class="joker-mark">HAHA</div>
       <h2>HUNT COMPLETE</h2>
-      <p>Your team reached the finale.</p>
+      <p>Your team's answers have been recorded.</p>
       <div class="status-card">
         <span>TEAM</span><strong id="complete-team">—</strong>
-        <span>CODE</span><strong>497</strong>
+        <span>STATUS</span><strong>MISSION COMPLETE</strong>
         <span>EXTRA</span><strong>???</strong>
       </div>
-      <p class="warning">Keep watching. Joker still has one last surprise.</p>
+      <p class="warning">Joker's final score will be revealed later.</p>
     </section>
 
     <section id="screen-denied" class="screen">
@@ -163,6 +189,6 @@
       <button class="ghost" data-go="mission">RETURN TO MISSION</button>
     </section>
   </main>
-  <script src="app.js?v=18"></script>
+  <script src="app.js?v=19"></script>
 </body>
 </html>
