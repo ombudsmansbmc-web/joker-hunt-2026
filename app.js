@@ -34,7 +34,7 @@ const stops={
     p2:"Joker left only three compass directions: NORTH — SOUTH — WEST. Which direction is missing?",
     p2answers:["east","oost"],
     qr:["over"],
-    photo:"Take a photo of the recognizable landmark at this location."
+    photo:"Take a photo of the entire monument at Seru Largu. Make sure the monument is clearly visible."
   }
 };
 
