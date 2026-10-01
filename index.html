@@ -113,19 +113,35 @@
       <div class="eyebrow">FINAL MISSION</div>
       <h2>LIVE ARREST ZONE</h2>
       <div class="joker-mark small">HAHA</div>
-      <div class="rules-card">
-        <strong>YOU HAVE 5 MINUTES</strong>
-        <ul>
-          <li>Crack Joker's lock code.</li>
-          <li>You have <strong>2 attempts</strong>.</li>
-          <li>Take an arrest photo with Joker.</li>
-          <li>The first team to crack the correct code wins the on-site wildcard.</li>
-        </ul>
+      <div id="final-arrival">
+        <p>You found Joker. When your whole team has arrived, start the final mission.</p>
+        <button class="primary" id="arrived-finale">WE HAVE ARRIVED</button>
       </div>
-      <label>Code attempt 1<input id="final-code-1" inputmode="numeric" maxlength="3" placeholder="___"></label>
-      <label>Code attempt 2<input id="final-code-2" inputmode="numeric" maxlength="3" placeholder="___"></label>
-      <button class="primary" id="submit-finale">SUBMIT FINAL CODE</button>
-      <p class="feedback" id="final-feedback"></p>
+      <div id="final-game" hidden>
+        <div class="status-card">
+          <span>TIME REMAINING</span><strong id="final-timer">05:00</strong>
+        </div>
+        <div class="rules-card">
+          <strong>YOU HAVE 5 MINUTES</strong>
+          <ul>
+            <li>Crack Joker's lock code.</li>
+            <li>You have <strong>2 attempts</strong> maximum.</li>
+            <li>Take an arrest photo with Joker as proof.</li>
+            <li>The first team to crack the correct code earns <strong>11 BONUS POINTS</strong>.</li>
+          </ul>
+        </div>
+        <label>LOCK CODE<input id="final-code-1" inputmode="numeric" maxlength="3" placeholder="___"></label>
+        <button class="primary" id="submit-finale">SUBMIT CODE</button>
+        <p id="final-attempts">ATTEMPTS REMAINING: 2</p>
+        <p class="feedback" id="final-feedback"></p>
+        <div class="stop-card">
+          <div class="step-badge">ARREST PROOF</div>
+          <p>Take a photo with Joker.</p>
+          <label class="photo-button">TAKE PHOTO<input id="joker-photo" type="file" accept="image/*" capture="environment"></label>
+          <img id="joker-photo-preview" alt="Joker arrest proof preview" hidden>
+          <p class="feedback" id="joker-photo-feedback"></p>
+        </div>
+      </div>
     </section>
 
     <section id="screen-complete" class="screen">
@@ -148,6 +164,6 @@
       <button class="ghost" data-go="mission">RETURN TO MISSION</button>
     </section>
   </main>
-  <script src="app.js?v=16"></script>
+  <script src="app.js?v=17"></script>
 </body>
 </html>
