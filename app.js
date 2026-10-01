@@ -224,6 +224,30 @@ document.getElementById("joker-photo").addEventListener("change",e=>{
 
 document.getElementById("back-at-base").addEventListener("click",()=>show("debrief"));
 
+function calculateFinalScore(){
+  let normal=0;
+  Object.entries(state.results||{}).forEach(([key,value])=>{
+    if(!/^(s[1-3]_(p1|p2|control))$/.test(key)) return;
+    if(!value||!value.correct) return;
+    normal += value.attempts===1 ? 5 : value.attempts===2 ? 3 : 0;
+  });
+
+  const haha=String(state.results.final_haha_count||"").trim()==="22" ? 10 : 0;
+  const socks=normalize(state.results.final_socks||"")==="green" ? 15 : 0;
+  const photo=state.results.final_photo===true ? 5 : 0;
+  const finalCode=(state.results.final_code&&state.results.final_code.correct===true) ? 11 : 0;
+
+  return {
+    normal_puzzles:normal,
+    haha_signs:haha,
+    green_socks:socks,
+    joker_photo:photo,
+    final_code_bonus:finalCode,
+    total:normal+haha+socks+photo+finalCode,
+    maximum:86
+  };
+}
+
 document.getElementById("submit-final-answers").addEventListener("click",()=>{
   const haha=document.getElementById("haha-count").value.trim();
   const socks=document.getElementById("joker-socks").value.trim();
@@ -236,6 +260,8 @@ document.getElementById("submit-final-answers").addEventListener("click",()=>{
   state.results.final_haha_count=haha;
   state.results.final_socks=socks;
   state.results.final_socks_correct=normalize(socks)==="green";
+  state.results.final_haha_correct=haha==="22";
+  state.results.score=calculateFinalScore();
   state.results.finished_at=Date.now();
   state.stage=5;
   save();
