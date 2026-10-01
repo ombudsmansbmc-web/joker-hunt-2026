@@ -173,8 +173,13 @@ document.getElementById("submit-finale").addEventListener("click",()=>{
 const testReset=new URLSearchParams(location.search).get("testreset");
 if(testReset==="1"){
   ["jh_team","jh_players","jh_start","jh_stage","jh_attempts","jh_results"].forEach(k=>localStorage.removeItem(k));
-  history.replaceState({}, "", location.pathname+"?fresh=1");
-  location.reload();
+  state.team="";
+  state.players=0;
+  state.start=0;
+  state.stage=0;
+  state.attempts={};
+  state.results={};
+  show("home");
 }
 
 const params=new URLSearchParams(location.search);
