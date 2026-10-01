@@ -129,7 +129,13 @@
             <li>Take a photo with Joker as proof.</li>
           </ul>
         </div>
-        <label>LOCK CODE<input id="final-code-1" inputmode="numeric" maxlength="3" placeholder="___"></label>
+        <div class="stop-card unlocked">
+          <div class="step-badge">FINAL LOCK CODE</div>
+          <p>During the hunt, you uncovered <strong>three numbers</strong>.</p>
+          <p>Use those three numbers to crack Joker's final lock.</p>
+          <p class="warning"><strong>Think carefully about the order.</strong> You only have <strong>2 attempts</strong>.</p>
+          <label>ENTER CODE<input id="final-code-1" inputmode="numeric" maxlength="3" placeholder="___"></label>
+        </div>
         <button class="primary" id="submit-finale">SUBMIT CODE</button>
         <p id="final-attempts">ATTEMPTS REMAINING: 2</p>
         <p class="feedback" id="final-feedback"></p>
