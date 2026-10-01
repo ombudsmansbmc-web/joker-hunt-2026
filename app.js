@@ -172,6 +172,7 @@ document.getElementById("submit-finale").addEventListener("click",()=>{
 
 const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
+
 if(unlock>=1 && unlock<=3){
   if(!state.start) state.start=Date.now();
   if(!state.team) state.team="TEST TEAM";
@@ -185,6 +186,15 @@ if(unlock>=1 && unlock<=3){
   save();
   show("finale");
 }else if(state.start){
-  renderMission();
-  show(state.stage===5?"complete":"mission");
+  if(state.stage>=1 && state.stage<=3){
+    loadStop(state.stage);
+    show("stop");
+  }else if(state.stage===4){
+    show("finale");
+  }else if(state.stage===5){
+    show("complete");
+  }else{
+    renderMission();
+    show("mission");
+  }
 }
