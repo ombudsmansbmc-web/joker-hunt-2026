@@ -156,18 +156,69 @@ function checkAnswer(inputId,answers,feedbackId,onOk){
   setTimeout(()=>{onOk&&onOk()},700);
 }
 
-document.getElementById("submit-finale").addEventListener("click",()=>{
-  const a=normalize(document.getElementById("final-code-1").value),b=normalize(document.getElementById("final-code-2").value),f=document.getElementById("final-feedback");
-  if(a==="497"||b==="497"){
-    f.textContent="CODE ACCEPTED — JOKER'S LOCK IS OPEN";
-    f.className="feedback ok";
-    document.getElementById("complete-team").textContent=state.team||"UNKNOWN TEAM";
-    state.stage=5;save();
-    setTimeout(()=>show("complete"),700);
-  } else {
-    f.textContent="CODE REJECTED";
-    f.className="feedback bad";
+let finaleTimer=null;
+
+document.getElementById("arrived-finale").addEventListener("click",()=>{
+  document.getElementById("final-arrival").hidden=true;
+  document.getElementById("final-game").hidden=false;
+  localStorage.setItem("jh_final_attempts","0");
+  const endTime=Date.now()+300000;
+  localStorage.setItem("jh_final_end",String(endTime));
+  function updateFinalTimer(){
+    const left=Math.max(0,Math.ceil((endTime-Date.now())/1000));
+    document.getElementById("final-timer").textContent=String(Math.floor(left/60)).padStart(2,"0")+":"+String(left%60).padStart(2,"0");
+    if(left===0){
+      clearInterval(finaleTimer);
+      document.getElementById("final-code-1").disabled=true;
+      document.getElementById("submit-finale").disabled=true;
+      document.getElementById("final-feedback").textContent="TIME IS UP — THE LOCK IS CLOSED.";
+    }
   }
+  updateFinalTimer();
+  finaleTimer=setInterval(updateFinalTimer,500);
+});
+
+document.getElementById("submit-finale").addEventListener("click",()=>{
+  const input=document.getElementById("final-code-1");
+  const feedback=document.getElementById("final-feedback");
+  let attempts=Number(localStorage.getItem("jh_final_attempts")||0)+1;
+  localStorage.setItem("jh_final_attempts",String(attempts));
+  if(normalize(input.value)==="497"){
+    clearInterval(finaleTimer);
+    state.results.final_code={correct:true,attempts:attempts,bonus:11};
+    save();
+    feedback.textContent="CODE ACCEPTED — JOKER'S LOCK IS OPEN";
+    feedback.className="feedback ok";
+    document.getElementById("final-attempts").textContent="LOCK OPEN";
+    input.disabled=true;
+    document.getElementById("submit-finale").disabled=true;
+  }else if(attempts>=2){
+    state.results.final_code={correct:false,attempts:attempts,bonus:0};
+    save();
+    feedback.textContent="SECOND ATTEMPT INCORRECT — THE LOCK IS CLOSED.";
+    feedback.className="feedback bad";
+    document.getElementById("final-attempts").textContent="ATTEMPTS REMAINING: 0";
+    input.disabled=true;
+    document.getElementById("submit-finale").disabled=true;
+  }else{
+    feedback.textContent="INCORRECT — ONE ATTEMPT REMAINS.";
+    feedback.className="feedback bad";
+    document.getElementById("final-attempts").textContent="ATTEMPTS REMAINING: 1";
+    input.value="";
+  }
+});
+
+document.getElementById("joker-photo").addEventListener("change",e=>{
+  const file=e.target.files&&e.target.files[0];
+  if(!file)return;
+  const preview=document.getElementById("joker-photo-preview");
+  preview.src=URL.createObjectURL(file);
+  preview.hidden=false;
+  const feedback=document.getElementById("joker-photo-feedback");
+  feedback.textContent="ARREST PHOTO RECEIVED";
+  feedback.className="feedback ok";
+  state.results.final_photo=true;
+  save();
 });
 
 const testReset=new URLSearchParams(location.search).get("testreset");
