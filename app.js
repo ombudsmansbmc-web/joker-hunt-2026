@@ -248,7 +248,47 @@ function calculateFinalScore(){
   };
 }
 
-document.getElementById("submit-final-answers").addEventListener("click",()=>{
+const SUPABASE_URL="https://wbhyezafseewcoxogyzy.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_aFg4-ZXiKZhtOHnxenF2Bg_CCjb7Z3Q";
+
+async function submitTeamResult(){
+  const score=state.results.score||calculateFinalScore();
+  const started=state.start ? new Date(state.start) : null;
+  const finished=state.results.finished_at ? new Date(state.results.finished_at) : new Date();
+  const payload={
+    team_name:state.team||"UNKNOWN TEAM",
+    players:Array.isArray(state.players)?state.players.join(", "):String(state.players||""),
+    started_at:started?started.toISOString():null,
+    finished_at:finished.toISOString(),
+    duration_seconds:started?Math.max(0,Math.round((finished-started)/1000)):null,
+    normal_points:score.normal_puzzles||0,
+    haha_answer:Number(state.results.final_haha_count)||0,
+    haha_points:score.haha_signs||0,
+    socks_answer:String(state.results.final_socks||""),
+    socks_points:score.green_socks||0,
+    joker_photo:state.results.final_photo===true,
+    photo_points:score.joker_photo||0,
+    final_code_correct:state.results.final_code?.correct===true,
+    final_code_attempts:state.results.final_code?.attempts||0,
+    final_code_bonus:score.final_code_bonus||0,
+    total_score:score.total||0,
+    game_data:state.results
+  };
+  const res=await fetch(SUPABASE_URL+"/rest/v1/team_results",{
+    method:"POST",
+    headers:{
+      "apikey":SUPABASE_PUBLISHABLE_KEY,
+      "Authorization":"Bearer "+SUPABASE_PUBLISHABLE_KEY,
+      "Content-Type":"application/json",
+      "Prefer":"return=minimal"
+    },
+    body:JSON.stringify(payload)
+  });
+  if(!res.ok) throw new Error("Result upload failed: "+res.status);
+  localStorage.setItem("jh_result_submitted","1");
+}
+
+document.getElementById("submit-final-answers").addEventListener("click",async()=>{
   const haha=document.getElementById("haha-count").value.trim();
   const socks=document.getElementById("joker-socks").value.trim();
   const feedback=document.getElementById("debrief-feedback");
@@ -263,10 +303,20 @@ document.getElementById("submit-final-answers").addEventListener("click",()=>{
   state.results.final_haha_correct=haha==="22";
   state.results.score=calculateFinalScore();
   state.results.finished_at=Date.now();
-  state.stage=5;
   save();
-  document.getElementById("complete-team").textContent=state.team||"UNKNOWN TEAM";
-  show("complete");
+  feedback.textContent="SUBMITTING FINAL RESULT...";
+  feedback.className="feedback";
+  try{
+    await submitTeamResult();
+    state.stage=5;
+    save();
+    document.getElementById("complete-team").textContent=state.team||"UNKNOWN TEAM";
+    show("complete");
+  }catch(err){
+    feedback.textContent="COULD NOT SEND RESULT — CHECK YOUR INTERNET AND TRY AGAIN.";
+    feedback.className="feedback bad";
+    console.error(err);
+  }
 });
 
 const testReset=new URLSearchParams(location.search).get("testreset");
