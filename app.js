@@ -26,8 +26,10 @@ const stops={
     story:"You've found the old laboratory. Joker wasn't hiding here without a reason. Evidence shows he has been using this abandoned place to develop a mysterious serum. He left in a hurry, but he also left clues behind. Search carefully and discover what kind of serum Joker has created.",
     p1:"(20 − 8) ÷ 3 = ?",
     p1answers:["4"],
-    p2:"AYERA — AWE — SEMPER. What do these words mean, and where on Bonaire can you find them while looking out over the town?",
-    p2answers:["seru largu","gisteren vandaag altijd","yesterday today always","yesterday today and always"],
+    p2:"AYERA — AWE — SEMPER. What do these words mean?",
+    p2answers:["yesterday today always","yesterday today and always","gisteren vandaag altijd","gisteren vandaag en altijd"],
+    p2b:"You can find these words on a monument overlooking Kralendijk. Where on Bonaire can you find this monument?",
+    p2banswers:["seru largu"],
     qr:["look"],
     photo:"Take a photo of the old laboratory at Karpata. Make sure the building is clearly visible."
   },
@@ -109,6 +111,16 @@ function loadStop(n){
   document.getElementById("video-status").innerHTML="<strong>VIDEO COMING SOON — TEST MODE</strong>";
   document.getElementById("puzzle1-text").textContent=data.p1;
   document.getElementById("puzzle2-text").textContent=data.p2;
+  const p2bCard=document.getElementById("puzzle2b-card");
+  p2bCard.hidden=!data.p2b;
+  if(data.p2b){
+    document.getElementById("puzzle2b-text").textContent=data.p2b;
+    document.getElementById("puzzle2b-answer").value="";
+    document.getElementById("puzzle2b-answer").disabled=false;
+    document.getElementById("puzzle2b-feedback").textContent="";
+    document.getElementById("puzzle2b-feedback").className="feedback";
+    p2bCard.classList.remove("unlocked");
+  }
   ["puzzle1-answer","puzzle2-answer","qr-answer"].forEach(id=>{const e=document.getElementById(id);e.value="";e.disabled=false});
   ["puzzle1-feedback","puzzle2-feedback","qr-feedback"].forEach(id=>{const e=document.getElementById(id);e.textContent="";e.className="feedback"});
   document.getElementById("puzzle1-card").classList.remove("unlocked");
@@ -125,23 +137,40 @@ function loadStop(n){
     document.getElementById("puzzle1-card").classList.add("unlocked");
   };
   document.getElementById("check-puzzle1").onclick=()=>checkAnswer("puzzle1-answer",data.p1answers,"puzzle1-feedback",()=>document.getElementById("puzzle2-card").classList.add("unlocked"));
-  document.getElementById("check-puzzle2").onclick=()=>checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"));
+  document.getElementById("check-puzzle2").onclick=()=>{
+    if(data.p2b){
+      checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>p2bCard.classList.add("unlocked"),"s"+n+"_p2");
+    }else{
+      checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"));
+    }
+  };
+  document.getElementById("check-puzzle2b").onclick=()=>{
+    checkAnswer("puzzle2b-answer",data.p2banswers||[],"puzzle2b-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"),"s"+n+"_p2",true);
+  };
   document.getElementById("check-qr").onclick=()=>checkAnswer("qr-answer",data.qr,"qr-feedback",()=>{
     if(n<3){state.stage=n+1;save();renderMission();setTimeout(()=>show("mission"),450)}
     else{state.stage=4;save();setTimeout(()=>show("finale"),450)}
   });
 }
 
-function checkAnswer(inputId,answers,feedbackId,onOk){
+function checkAnswer(inputId,answers,feedbackId,onOk,keyOverride,keepExisting){
   const input=document.getElementById(inputId),feedback=document.getElementById(feedbackId),value=normalize(input.value);
   const stopNumber=Number(document.getElementById("stop-heading").textContent.replace(/\D/g,""))||0;
-  const key="s"+stopNumber+"_"+inputId;
+  const key=keyOverride||("s"+stopNumber+"_"+inputId);
   const ok=answers.map(normalize).includes(value);
-  state.attempts[key]=(state.attempts[key]||0)+1;
+  const attemptKey=keyOverride ? key+"_"+inputId : key;
+  state.attempts[attemptKey]=(state.attempts[attemptKey]||0)+1;
+  const attempts=state.attempts[attemptKey];
 
   if(ok){
-    state.results[key]={correct:true,attempts:state.attempts[key]};
-    feedback.textContent=state.attempts[key]===1?"CORRECT — FULL POINTS":"CORRECT — SECOND ATTEMPT";
+    if(keepExisting){
+      const prev=state.results[key];
+      const combinedAttempts=(prev&&prev.correct?prev.attempts:2)+attempts-1;
+      state.results[key]={correct:true,attempts:Math.min(2,combinedAttempts)};
+    }else{
+      state.results[key]={correct:true,attempts:attempts};
+    }
+    feedback.textContent=attempts===1?"CORRECT — FULL POINTS":"CORRECT — SECOND ATTEMPT";
     feedback.className="feedback ok";
     input.disabled=true;
     save();
@@ -149,14 +178,14 @@ function checkAnswer(inputId,answers,feedbackId,onOk){
     return;
   }
 
-  if(state.attempts[key]===1){
+  if(attempts===1){
     feedback.textContent="INCORRECT — HAHAHA… TRY AGAIN.";
     feedback.className="feedback bad";
     save();
     return;
   }
 
-  state.results[key]={correct:false,attempts:state.attempts[key]};
+  if(!keepExisting) state.results[key]={correct:false,attempts:attempts};
   feedback.textContent="STILL WRONG — JOKER WINS THIS ONE. CONTINUE THE HUNT.";
   feedback.className="feedback bad";
   input.disabled=true;
