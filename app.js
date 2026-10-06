@@ -11,6 +11,8 @@ const state={
 const stops={
   1:{
     title:"STOP 1",
+    storyTitle:"THE FIRST TRAIL",
+    story:"Joker has escaped from Arkham Asylum and made his way to Bonaire. Batman tracked his first movements to this area. Somewhere around Willemstoren, Joker left behind the first pieces of his twisted game. Find his trail and discover where he went next.",
     p1:"18 ÷ 3 + 2 × 2 − 3 = ?",
     p1answers:["7"],
     p2:"You stop here as a group more often, but you are not the only ones. Many people stop here to search for something underwater. Long ago this place had a very different purpose. Where people once came for help, Joker now uses the building across the road for his experiments. What kind of place are you looking for?",
@@ -20,6 +22,8 @@ const stops={
   },
   2:{
     title:"STOP 2",
+    storyTitle:"THE LABORATORY",
+    story:"You've found the old laboratory. Joker wasn't hiding here without a reason. Evidence shows he has been using this abandoned place to develop a mysterious serum. He left in a hurry, but he also left clues behind. Search carefully and discover what kind of serum Joker has created.",
     p1:"(20 − 8) ÷ 3 = ?",
     p1answers:["4"],
     p2:"AYERA — AWE — SEMPER. What do these words mean, and where on Bonaire can you find them while looking out over the town?",
@@ -29,6 +33,8 @@ const stops={
   },
   3:{
     title:"STOP 3",
+    storyTitle:"JOKER'S PLAN",
+    story:"The clues have led you high above the island. Joker came here for the perfect overview of Bonaire — not to enjoy the scenery, but to determine how far his laughing serum would need to spread. He left in a hurry and left more clues behind. Find them before it's too late.",
     p1:"(18 ÷ 3) + (12 ÷ 4) = ?",
     p1answers:["9"],
     p2:"Joker left only three compass directions: NORTH — SOUTH — WEST. Which direction is missing?",
@@ -95,6 +101,8 @@ function unlockStop(n){
 function loadStop(n){
   const data=stops[n];
   document.getElementById("stop-heading").textContent=data.title;
+  document.getElementById("story-title").textContent=data.storyTitle;
+  document.getElementById("story-text").textContent=data.story;
   document.getElementById("stop-eyebrow").textContent="JOKER TRANSMISSION // "+data.title;
   document.getElementById("photo-instruction").textContent=data.photo;
   document.getElementById("video-check").hidden=false;
