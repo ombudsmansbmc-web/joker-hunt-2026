@@ -370,37 +370,7 @@ document.getElementById("submit-final-answers").addEventListener("click",async()
   }
 });
 
-const testReset=new URLSearchParams(location.search).get("testreset");
-if(testReset==="1"){
-  ["jh_team","jh_players","jh_start","jh_stage","jh_attempts","jh_results"].forEach(k=>localStorage.removeItem(k));
-  state.team="";
-  state.players=0;
-  state.start=0;
-  state.stage=0;
-  state.attempts={};
-  state.results={};
-  show("home");
-}
-
-const params=new URLSearchParams(location.search);
-const unlock=Number(params.get("unlock")||0);
-
-if(unlock>=1 && unlock<=3){
-  // A direct test link starts a fresh test of this stop, without old attempts.
-  for(const key of Object.keys(state.attempts)){if(key.startsWith("s"+unlock+"_"))delete state.attempts[key]}
-  for(const key of Object.keys(state.results)){if(key.startsWith("s"+unlock+"_"))delete state.results[key]}
-  if(!state.start) state.start=Date.now();
-  if(!state.team) state.team="TEST TEAM";
-  if(!state.players) state.players=2;
-  state.stage=unlock;
-  save();
-  unlockStop(unlock);
-}else if(unlock===4){
-  if(!state.start) state.start=Date.now();
-  state.stage=4;
-  save();
-  show("finale");
-}else if(state.start){
+if(state.start){
   if(state.stage>=1 && state.stage<=3){
     loadStop(state.stage);
     show("stop");
