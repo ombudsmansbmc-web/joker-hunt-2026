@@ -375,6 +375,9 @@ const params=new URLSearchParams(location.search);
 const unlock=Number(params.get("unlock")||0);
 
 if(unlock>=1 && unlock<=3){
+  // A direct test link starts a fresh test of this stop, without old attempts.
+  for(const key of Object.keys(state.attempts)){if(key.startsWith("s"+unlock+"_"))delete state.attempts[key]}
+  for(const key of Object.keys(state.results)){if(key.startsWith("s"+unlock+"_"))delete state.results[key]}
   if(!state.start) state.start=Date.now();
   if(!state.team) state.team="TEST TEAM";
   if(!state.players) state.players=2;
