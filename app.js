@@ -182,6 +182,9 @@ function checkAnswer(inputId,answers,feedbackId,onOk,keyOverride,keepExisting){
     input.disabled=false;
     input.readOnly=false;
     input.value="";
+    input.removeAttribute("disabled");
+    input.removeAttribute("readonly");
+    document.getElementById("check-"+inputId.replace("-answer","")).disabled=false;
     feedback.textContent="INCORRECT — HAHAHA… TRY AGAIN.";
     feedback.className="feedback bad";
     save();
