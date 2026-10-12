@@ -139,13 +139,13 @@ function loadStop(n){
   document.getElementById("check-puzzle1").onclick=()=>checkAnswer("puzzle1-answer",data.p1answers,"puzzle1-feedback",()=>document.getElementById("puzzle2-card").classList.add("unlocked"));
   document.getElementById("check-puzzle2").onclick=()=>{
     if(data.p2b){
-      checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>p2bCard.classList.add("unlocked"),"s"+n+"_p2");
+      checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>p2bCard.classList.add("unlocked"),"s"+n+"_p2a");
     }else{
       checkAnswer("puzzle2-answer",data.p2answers,"puzzle2-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"));
     }
   };
   document.getElementById("check-puzzle2b").onclick=()=>{
-    checkAnswer("puzzle2b-answer",data.p2banswers||[],"puzzle2b-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"),"s"+n+"_p2",true);
+    checkAnswer("puzzle2b-answer",data.p2banswers||[],"puzzle2b-feedback",()=>document.getElementById("qr-card").classList.add("unlocked"),"s"+n+"_p2b");
   };
   document.getElementById("check-qr").onclick=()=>checkAnswer("qr-answer",data.qr,"qr-feedback",()=>{
     if(n<3){state.stage=n+1;save();renderMission();setTimeout(()=>show("mission"),450)}
@@ -156,7 +156,8 @@ function loadStop(n){
 function checkAnswer(inputId,answers,feedbackId,onOk,keyOverride,keepExisting){
   const input=document.getElementById(inputId),feedback=document.getElementById(feedbackId),value=normalize(input.value);
   const stopNumber=Number(document.getElementById("stop-heading").textContent.replace(/\D/g,""))||0;
-  const key=keyOverride||("s"+stopNumber+"_"+inputId);
+  const scorePart={"puzzle1-answer":"p1","puzzle2-answer":"p2","qr-answer":"control"}[inputId];
+  const key=keyOverride||("s"+stopNumber+"_"+(scorePart||inputId));
   const ok=answers.map(normalize).includes(value);
   const attemptKey=keyOverride ? key+"_"+inputId : key;
   state.attempts[attemptKey]=(state.attempts[attemptKey]||0)+1;
@@ -269,11 +270,18 @@ document.getElementById("back-at-base").addEventListener("click",()=>show("debri
 
 function calculateFinalScore(){
   let normal=0;
-  Object.entries(state.results||{}).forEach(([key,value])=>{
-    if(!/^(s[1-3]_(p1|p2|control))$/.test(key)) return;
-    if(!value||!value.correct) return;
-    normal += value.attempts===1 ? 5 : value.attempts===2 ? 3 : 0;
-  });
+  for(let n=1;n<=3;n++){
+    for(const part of ["p1","p2","control"]){
+      const key="s"+n+"_"+part;
+      if(n===2 && part==="p2"){
+        const a=state.results.s2_p2a, b=state.results.s2_p2b;
+        if(a?.correct && b?.correct) normal+=(a.attempts===1 && b.attempts===1)?5:3;
+        continue;
+      }
+      const value=state.results[key];
+      if(value?.correct) normal+=value.attempts===1?5:value.attempts===2?3:0;
+    }
+  }
 
   const haha=String(state.results.final_haha_count||"").trim()==="22" ? 10 : 0;
   const socks=normalize(state.results.final_socks||"")==="green" ? 15 : 0;
