@@ -179,6 +179,9 @@ function checkAnswer(inputId,answers,feedbackId,onOk,keyOverride,keepExisting){
   }
 
   if(attempts===1){
+    input.disabled=false;
+    input.readOnly=false;
+    input.value="";
     feedback.textContent="INCORRECT — HAHAHA… TRY AGAIN.";
     feedback.className="feedback bad";
     save();
