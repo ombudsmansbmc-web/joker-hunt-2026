@@ -23,7 +23,7 @@ const stops={
   2:{
     title:"STOP 2",
     storyTitle:"THE LABORATORY",
-    story:"You've found the old laboratory. Joker wasn't hiding here without a reason. Evidence shows he has been using this abandoned place to develop a mysterious serum. He left in a hurry, but he also left clues behind. Search carefully and discover what kind of serum Joker has created.",
+    story:"You've found the old laboratory. Joker wasn't hiding here without a reason. Joker has been using this abandoned place to develop a mysterious serum. His plans are becoming clearer, but the next answers must be uncovered by solving the puzzles on your screen.",
     p1:"(20 − 8) ÷ 3 = ?",
     p1answers:["4"],
     p2:"AYERA — AWE — SEMPER. What do these words mean?",
