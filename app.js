@@ -36,7 +36,7 @@ const stops={
   3:{
     title:"STOP 3",
     storyTitle:"JOKER'S PLAN",
-    story:"The clues have led you high above the island. Joker came here for the perfect overview of Bonaire — not to enjoy the scenery, but to determine how far his laughing serum would need to spread. He left in a hurry and left more clues behind. Find them before it's too late.",
+    story:"The clues have led you high above the island. Joker came here for the perfect overview of Bonaire — not to enjoy the scenery, but to determine how far his laughing serum would need to spread. He left in a hurry, but the clues can only be uncovered by solving the questions on your screen.",
     p1:"(18 ÷ 3) + (12 ÷ 4) = ?",
     p1answers:["9"],
     p2:"Joker left only three compass directions: NORTH — SOUTH — WEST. Which direction is missing?",
