@@ -34,7 +34,7 @@
     <section id="screen-briefing" class="screen">
       <div class="eyebrow">MISSION BRIEFING</div>
       <h2>ARKHAM PROTOCOL</h2>
-      <div class="mission-copy">
+      <div class="mission-copy"><div class="rules-card"><strong>ARKHAM ASYLUM – SECURITY ALERT</strong><p>October 31st. Gotham City. A dangerous criminal has escaped from Arkham Asylum. His name... The Joker.</p><p>Authorities have lost all contact with him. Intelligence reports suggest he has fled Gotham City and is now hiding somewhere on the Caribbean island of Bonaire.</p><p>Wherever Joker goes, chaos follows. Follow the clues, collect evidence and solve the puzzles. Not every clue will lead you in the right direction.</p><strong>WARNING! INCOMING TRANSMISSION – BATMAN IS CALLING...</strong></div>
         <p><strong>INCOMING TRANSMISSION — BATMAN</strong></p>
         <video controls playsinline preload="metadata" style="width:100%;border-radius:12px;background:#000;margin:10px 0 14px">
           <source src="https://www.dropbox.com/scl/fi/w6mri4kbwanm7mfuubbbq/batman_fixed-1.mp4?rlkey=0tozboucy1nix53q1qmbqak0u&st=gqczuhxl&raw=1" type="video/mp4">
@@ -70,97 +70,34 @@
     </section>
 
     <section id="screen-stop" class="screen">
-      <div class="eyebrow" id="stop-eyebrow">JOKER TRANSMISSION</div>
-      <h2 id="stop-heading">STOP</h2>
-      <div class="joker-mark small">HAHA</div>
-      <div class="stop-card unlocked" id="story-card">
-        <div class="step-badge" id="story-title">CASE FILE</div>
-        <p id="story-text"></p>
-      </div>
-      <div class="stop-card" id="photo-card">
-        <div class="step-badge">LOCATION PROOF</div>
-        <p id="photo-instruction">Take a photo of the landmark at this location.</p>
-        <label class="photo-button">TAKE PHOTO<input id="location-photo" type="file" accept="image/*" capture="environment"></label>
-        <img id="photo-preview" alt="Location proof preview" hidden>
-        <p class="feedback" id="photo-feedback"></p>
-      </div>
-      <div class="stop-card locked-card" id="puzzle1-card">
-        <div class="step-badge">PUZZLE 1</div>
-        <p id="puzzle1-text"></p>
-        <input id="puzzle1-answer" autocomplete="off" placeholder="Enter answer">
-        <button class="primary compact" id="check-puzzle1">CHECK ANSWER</button>
-        <p class="feedback" id="puzzle1-feedback"></p>
-      </div>
-
-      <div class="stop-card locked-card" id="puzzle2-card">
-        <div class="step-badge">PUZZLE 2</div>
-        <p id="puzzle2-text"></p>
-        <input id="puzzle2-answer" autocomplete="off" placeholder="Enter answer">
-        <button class="primary compact" id="check-puzzle2">CHECK ANSWER</button>
-        <p class="feedback" id="puzzle2-feedback"></p>
-      </div>
-
-      <div class="stop-card locked-card" id="puzzle2b-card" hidden>
-        <div class="step-badge">PUZZLE 2B</div>
-        <p id="puzzle2b-text"></p>
-        <input id="puzzle2b-answer" autocomplete="off" placeholder="Enter answer">
-        <button class="primary compact" id="check-puzzle2b">CHECK ANSWER</button>
-        <p class="feedback" id="puzzle2b-feedback"></p>
-      </div>
-
-      <div class="stop-card locked-card" id="qr-card">
-        <div class="step-badge">JOKER TRANSMISSION</div>
-        <p id="video-status"><strong>VIDEO COMING SOON</strong></p>
-        <div id="video-check" hidden>
-          <p>After watching Joker's video, answer:</p>
-          <p><strong>What is the last word of Joker's final sentence?</strong></p>
-          <input id="qr-answer" autocomplete="off" placeholder="Enter control word">
-          <button class="primary compact" id="check-qr">UNLOCK NEXT MISSION</button>
-          <p class="feedback" id="qr-feedback"></p>
-        </div>
-      </div>
+      <div class="eyebrow">ARKHAM PROTOCOL</div><h2 id="stop-heading">MISSION</h2>
+      <div class="stop-card unlocked"><div class="step-badge" id="story-title">CASE FILE</div><p id="story-text"></p></div>
+      <div id="mission-tasks"></div>
+      <p class="feedback" id="mission-feedback"></p>
+      <button class="primary" id="complete-stop">CONTINUE INVESTIGATION</button>
     </section>
-
     <section id="screen-finale" class="screen">
-      <div class="eyebrow">FINAL MISSION</div>
-      <h2>LIVE ARREST ZONE</h2>
-      <div class="joker-mark small">HAHA</div>
-      <div id="final-arrival">
-        <p>When your whole team has arrived, start the final mission.</p>
-        <button class="primary" id="arrived-finale">WE HAVE ARRIVED</button>
-      </div>
+      <div class="eyebrow">FINAL MISSION</div><h2>JOKER'S LAST LAUGH</h2>
+      <div class="stop-card unlocked"><div class="step-badge">JOKER'S PARTY</div>
+      <p>HAHAHAHA! Welcome to my party! You think you can stop me? You have NINETY SECONDS to crack my code. Get it right and you can arrest me. Get it wrong and I walk free — no arrest photo! HAHAHA!</p>
+      <p id="final-audio-note">Joker's final audio transmission will be added when available.</p></div>
+      <div id="final-arrival"><button class="primary" id="arrived-finale">START 90-SECOND CHALLENGE</button></div>
       <div id="final-game" hidden>
-        <div class="status-card">
-          <span>TIME REMAINING</span><strong id="final-timer">05:00</strong>
+        <div class="status-card"><span>TIME REMAINING</span><strong id="final-timer">01:30</strong></div>
+        <p>Enter the three digits in the correct order. You have two attempts.</p>
+        <div class="stop-card unlocked"><div class="step-badge">SECRET CODE</div>
+          <label>FIRST DIGIT <input id="digit-a" inputmode="numeric" maxlength="1"></label>
+          <label>SECOND DIGIT <input id="digit-b" inputmode="numeric" maxlength="1"></label>
+          <label>THIRD DIGIT <input id="digit-c" inputmode="numeric" maxlength="1"></label>
+          <button class="primary" id="submit-finale">SUBMIT CODE</button>
+          <p id="final-attempts">ATTEMPTS REMAINING: 2</p><p id="final-feedback" class="feedback"></p>
         </div>
-        <div class="rules-card">
-          <strong>FINAL TASKS</strong>
-          <ul>
-            <li>Crack Joker's lock code.</li>
-            <li>You have 2 attempts.</li>
-            <li>Take a photo with Joker as proof.</li>
-          </ul>
+        <div id="arrest-area" class="stop-card" hidden><div class="step-badge">JOKER ARRESTED!</div>
+          <p>Congratulations! You may take an arrest photo with Joker using your own camera. Save it in your phone gallery.</p>
         </div>
-        <div class="stop-card unlocked">
-          <div class="step-badge">FINAL LOCK CODE</div>
-          <p>During the hunt, you uncovered <strong>three numbers</strong>.</p>
-          <p>Use those three numbers to crack Joker's final lock.</p>
-          <p class="warning"><strong>Think carefully about the order.</strong> You only have <strong>2 attempts</strong>.</p>
-          <label>ENTER CODE<input id="final-code-1" inputmode="numeric" maxlength="3" placeholder="___"></label>
-        </div>
-        <button class="primary" id="submit-finale">SUBMIT CODE</button>
-        <p id="final-attempts">ATTEMPTS REMAINING: 2</p>
-        <p class="feedback" id="final-feedback"></p>
-        <div class="stop-card">
-          <div class="step-badge">ARREST PROOF</div>
-          <p>Take a photo with Joker.</p>
-          <label class="photo-button">TAKE PHOTO<input id="joker-photo" type="file" accept="image/*" capture="environment"></label>
-          <img id="joker-photo-preview" alt="Joker arrest proof preview" hidden>
-          <p class="feedback" id="joker-photo-feedback"></p>
-        </div>
+        <button class="primary" id="leave-finale" hidden>RETURN TO BASE</button>
       </div>
     </section>
-
     <section id="screen-return" class="screen">
       <div class="eyebrow">FIELD MISSION COMPLETE</div>
       <h2>RETURN TO BASE</h2>
@@ -209,6 +146,6 @@
       <button class="ghost" data-go="mission">RETURN TO MISSION</button>
     </section>
   </main>
-  <script src="app.js?v=33"></script>
+  <script src="app.js?v=34"></script>
 </body>
 </html>
