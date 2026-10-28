@@ -35,7 +35,27 @@ function endFinal(success,message){if(finished)return;finished=true;clearInterva
 el("submit-finale").onclick=()=>{if(finished||Date.now()>=finalEnd){endFinal(false,"HAHAHAHA! You failed to crack my code! My plan has succeeded, and I've escaped once again. Better luck next time!");return}const digits=["digit-a","digit-b","digit-c"].map(id=>el(id).value.trim());if(digits.some(x=>!/^[0-9]$/.test(x))){el("final-feedback").textContent="ENTER ALL THREE DIGITS.";return}attempts++;if(digits.join("")==="527"){endFinal(true,"Congratulations! You've cracked Joker's secret code and stopped his evil plan. Joker is under arrest! You have earned your arrest photo with the Joker!");return}if(attempts>=2){endFinal(false,"HAHAHAHA! You failed to crack my code! My plan has succeeded, and I've escaped once again. Better luck next time!");return}el("final-feedback").textContent="INCORRECT — ONE ATTEMPT REMAINS.";el("final-attempts").textContent="ATTEMPTS REMAINING: 1";["digit-a","digit-b","digit-c"].forEach(id=>el(id).value="")};
 el("leave-finale").onclick=()=>show("return");
 el("back-at-base").onclick=()=>show("debrief");
-function calculateFinalScore(){const haha=String(state.results.final_haha_count||"").trim()==="22"?10:0,socks=norm(state.results.final_socks)==="green"?15:0,photo=state.results.final_code?.correct?5:0,finalCode=state.results.final_code?.correct?11:0;return {normal_puzzles:0,haha_signs:haha,green_socks:socks,joker_photo:photo,final_code_bonus:finalCode,total:haha+socks+photo+finalCode,maximum:41}}
+function calculateFinalScore(){
+const answers=[
+["new_s2_answer_0",v=>norm(v)==="1837"],
+["new_s2_answer_1",v=>norm(v)==="7"],
+["new_s2_answer_2",v=>norm(v)==="a laughing serum"],
+["new_s2_answer_3",v=>norm(v)==="karpata laboratory"],
+["new_s3_answer_0",v=>["kas grandi","kas grandi."].includes(norm(v))],
+["new_s3_answer_1",v=>norm(v)==="5"],
+["new_s3_answer_2",v=>norm(v)==="3. a smoke bomb"],
+["new_s4_answer_0",v=>norm(v)==="east"],
+["new_s4_answer_1",v=>norm(v)==="2"],
+["new_s4_answer_2",v=>norm(v)==="3. discotheek e wowo"]
+];
+const puzzlePoints=answers.reduce((sum,[key,correct])=>sum+(correct(state.results[key])?3:0),0);
+const evidencePoints=[0,1,2].reduce((sum,i)=>sum+(state.results["new_s1_answer_"+i]===true?1:0),0);
+const haha=String(state.results.final_haha_count||"").trim()==="22"?10:0;
+const socks=norm(state.results.final_socks)==="green"?15:0;
+const photo=state.results.final_code?.correct?5:0;
+const finalCode=state.results.final_code?.correct?11:0;
+return {normal_puzzles:puzzlePoints+evidencePoints,puzzle_points:puzzlePoints,evidence_points:evidencePoints,haha_signs:haha,green_socks:socks,joker_photo:photo,final_code_bonus:finalCode,total:puzzlePoints+evidencePoints+haha+socks+photo+finalCode,maximum:74}
+}
 const SUPABASE_URL="https://wbhyezafseewcoxogyzy.supabase.co",SUPABASE_PUBLISHABLE_KEY="sb_publishable_aFg4-ZXiKZhtOHnxenF2Bg_CCjb7Z3Q";
 async function submitTeamResult(){const score=state.results.score||calculateFinalScore(),finished=new Date(state.results.finished_at||Date.now()),started=state.start?new Date(state.start):null;const payload={team_name:state.team||"UNKNOWN TEAM",players:String(state.players||""),started_at:started?.toISOString()||null,finished_at:finished.toISOString(),duration_seconds:started?Math.round((finished-started)/1000):null,normal_points:score.normal_puzzles,haha_answer:Number(state.results.final_haha_count)||0,haha_points:score.haha_signs,socks_answer:String(state.results.final_socks||""),socks_points:score.green_socks,joker_photo:state.results.final_photo===true,photo_points:score.joker_photo,final_code_correct:state.results.final_code?.correct===true,final_code_attempts:state.results.final_code?.attempts||0,final_code_bonus:score.final_code_bonus,total_score:score.total,game_data:state.results};const res=await fetch(SUPABASE_URL+"/rest/v1/team_results",{method:"POST",headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:"Bearer "+SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify(payload)});if(!res.ok)throw Error("Upload failed "+res.status)}
 el("submit-final-answers").onclick=async()=>{const haha=el("haha-count").value.trim(),socks=el("joker-socks").value.trim(),feedback=el("debrief-feedback");if(!haha||!socks){feedback.textContent="ANSWER BOTH QUESTIONS.";return}state.results.final_haha_count=haha;state.results.final_socks=socks;state.results.score=calculateFinalScore();state.results.finished_at=Date.now();save();feedback.textContent="SUBMITTING RESULTS...";try{await submitTeamResult();state.stage=6;save();el("complete-team").textContent=state.team;show("complete")}catch(e){feedback.textContent="UPLOAD FAILED — CHECK CONNECTION AND TRY AGAIN."}};
