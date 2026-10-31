@@ -97,9 +97,9 @@
         <div class="status-card"><span>TIME REMAINING</span><strong id="final-timer">01:30</strong></div>
         <p>You've collected three secret digits during your investigation. WARNING! The digits are not necessarily in the order of your journey! Find the correct combination to crack Joker's secret code. You have 90 seconds and only 2 attempts to enter the correct combination.</p>
         <div class="stop-card unlocked"><div class="step-badge">SECRET CODE</div>
-          <label>FIRST DIGIT <input id="digit-a" inputmode="numeric" maxlength="1"></label>
-          <label>SECOND DIGIT <input id="digit-b" inputmode="numeric" maxlength="1"></label>
-          <label>THIRD DIGIT <input id="digit-c" inputmode="numeric" maxlength="1"></label>
+          <label>FIRST DIGIT <input id="digit-a" inputmode="numeric" maxlength="1" autocomplete="off" value=""></label>
+          <label>SECOND DIGIT <input id="digit-b" inputmode="numeric" maxlength="1" autocomplete="off" value=""></label>
+          <label>THIRD DIGIT <input id="digit-c" inputmode="numeric" maxlength="1" autocomplete="off" value=""></label>
           <button class="primary" id="submit-finale">SUBMIT CODE</button>
           <p id="final-attempts">ATTEMPTS REMAINING: 2</p><p id="final-feedback" class="feedback"></p>
         </div>
@@ -164,6 +164,6 @@
       <button class="ghost" data-go="mission">RETURN TO MISSION</button>
     </section>
   </main>
-  <script src="app.js?v=45"></script>
+  <script src="app.js?v=46"></script>
 </body>
 </html>
